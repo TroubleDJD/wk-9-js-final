@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wk X Project</title>
+</head>
+<body>
+    <h1>Wk X Project</h1>
+    <script>
+        console.log("codeAlong:"); 
+        class Card {
+    constructor(suit, rank) {
+        this.suit = suit;
+        this.rank = rank;
+    }
+}
+
+class Deck {
+    constructor() {
+        this.cards = [];
+        const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
+        const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
+        for (const suit of suits) {
+            for (const rank of ranks) {
+                this.cards.push(new Card(suit, rank));
+            }
+        }
+
+        // Shuffle the deck
+        this.cards.sort(() => Math.random() - 0.5);
+    }
+
+    deal() {
+        return this.cards.pop();
+    }
+}
+
+class Player {
+    constructor(name) {
+        this.name = name;
+        this.hand = [];
+        this.score = 0;
+    }
+
+    playCard() {
+        return this.hand.pop();
+    }
+
+    receiveCards(cards) {
+        this.hand = this.hand.concat(cards);
+    }
+}
+
+class WarGame {
+    constructor() {
+        this.deck = new Deck();
+        this.player1 = new Player('Player 1');
+        this.player2 = new Player('Player 2');
+    }
+
+    playRound() {
+        const card1 = this.player1.playCard();
+        const card2 = this.player2.playCard();
+
+        if (card1.rank > card2.rank) {
+            this.player1.score += 1;
+        } else if (card1.rank < card2.rank) {
+            this.player2.score += 1;
+        }
+    }
+
+    play() {
+        // Deal cards to players
+        for (let i = 0; i < 26; i++) {
+            this.player1.receiveCards([this.deck.deal()]);
+            this.player2.receiveCards([this.deck.deal()]);
+        }
+
+        // Play rounds
+        for (let i = 0; i < 26; i++) {
+            this.playRound();
+        }
+
+        // Display scores and declare the winner
+        console.log(`${this.player1.name} score: ${this.player1.score}`);
+        console.log(`${this.player2.name} score: ${this.player2.score}`);
+
+        if (this.player1.score > this.player2.score) {
+            console.log(`${this.player1.name} wins!`);
+        } else if (this.player1.score < this.player2.score) {
+            console.log(`${this.player2.name} wins!`);
+        } else {
+            console.log('It\'s a tie!');
+        }
+    }
+}
+
+// Run the game
+const warGame = new WarGame();
+warGame.play();
+
+
+
+
+
+   </script>
+</html>
